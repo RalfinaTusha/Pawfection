@@ -1,0 +1,42 @@
+.gradient-custom {
+  /* fallback for old browsers */
+  background: #7ac2a1;
+  
+  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(0deg, rgba(122,194,161,1) 0%, rgba(123,181,179,1) 100%);  
+  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  background: linear-gradient(0deg, rgba(122,194,161,1) 0%, rgba(123,181,179,1) 100%);  }
+
+  h2 {
+    margin-top: 10px; /* Adjust as needed */
+    color: white; /* Set the desired text color */
+    font-weight : bold; /* Adjust the font weight if needed */
+    font-family: 'Times New Roman', Times, serif;
+    
+}
+
+.image1{
+  width: 722px;
+  height: 100px;
+  border-radius: 50%;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+  border: 2px solid white;
+}
+
+.green{
+  color: #568771;
+  font-weight: bold;
+  font-size: 20px;
+  font-family: 'Times New Roman', Times, serif;
+}
+
+.btnadd{
+  background-color:#7ac2a1;
+}
+
+.btnadd:hover{
+  background-color: #568771;
+}
