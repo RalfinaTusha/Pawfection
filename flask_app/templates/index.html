@@ -191,17 +191,18 @@
 				<div class="col-md-6 col-lg-3 d-flex justify-content-center counter-wrap ftco-animate">
 					<div class="block-18 text-center">
 						<div class="text">
-							<strong class="number" data-number="50">0</strong>
+							<strong class="number" id="userCount" data-number="50"> </strong>
 						</div>
 						<div class="text">
-							<span>Customer</span>
+							<span>Daycare spots</span>
 						</div>
 					</div>
 				</div>
+				
 				<div class="col-md-6 col-lg-3 d-flex justify-content-center counter-wrap ftco-animate">
 					<div class="block-18 text-center">
 						<div class="text">
-							<strong class="number" data-number="8500">0</strong>
+							<strong class="number" data-number="3">0</strong>
 						</div>
 						<div class="text">
 							<span>Vets</span>
@@ -211,17 +212,17 @@
 				<div class="col-md-6 col-lg-3 d-flex justify-content-center counter-wrap ftco-animate">
 					<div class="block-18 text-center">
 						<div class="text">
-							<strong class="number" data-number="2">0</strong>
+							<strong class="number" data-number="10">0</strong>
 						</div>
 						<div class="text">
-							<span>Products</span>
+							<span>Different services</span>
 						</div>
 					</div>
 				</div>
 				<div class="col-md-6 col-lg-3 d-flex justify-content-center counter-wrap ftco-animate">
 					<div class="block-18 text-center">
 						<div class="text">
-							<strong class="number" data-number="50">0</strong>
+							<strong class="number" data-number="200">0</strong>
 						</div>
 						<div class="text">
 							<span>Pets Hosted</span>
@@ -231,6 +232,9 @@
 			</div>
 		</div>
 	</section>
+	
+ 
+
 
 	
 
@@ -360,60 +364,31 @@
 			<div class="row justify-content-center pb-5 mb-3">
 				<div class="col-md-7 heading-section text-center ftco-animate">
 					<h2>Latest news from our blog</h2>
+					<a href="/blogpage">View all</a>
 				</div>
 			</div>
 			<div class="row d-flex">
+				{% for three_post in three_posts %}
 				<div class="col-md-4 d-flex ftco-animate">
 					<div class="blog-entry align-self-stretch">
-						<a href="blog-single.html" class="block-20 rounded"
-							style="background-image: url('../static/images/image_1.jpg');">
+						<a href=" " class="block-20 rounded"
+							style="background-image: url('../static/images/{{three_post.image}}');">
 						</a>
 						<div class="text p-4">
 							<div class="meta mb-2">
-								<div><a href="#">April 07, 2020</a></div>
+								<div><a href="#">{{three_post.created_at}}</a></div>
 								<div><a href="#">Admin</a></div>
-								<div><a href="#" class="meta-chat"><span class="fa fa-comment"></span> 3</a></div>
+								<div><a href="#" class="meta-chat"><span class="fa fa-comment"></span> </a></div>
 							</div>
-							<h3 class="heading"><a href="#">Even the all-powerful Pointing has no control about the
-									blind texts</a></h3>
+							<h3 class="heading"><a href="#">{{three_post.title}}</a></h3>
 						</div>
 					</div>
 				</div>
-				<div class="col-md-4 d-flex ftco-animate">
-					<div class="blog-entry align-self-stretch">
-						<a href="blog-single.html" class="block-20 rounded"
-							style="background-image: url('../static/images/image_2.jpg');">
-						</a>
-						<div class="text p-4">
-							<div class="meta mb-2">
-								<div><a href="#">April 07, 2020</a></div>
-								<div><a href="#">Admin</a></div>
-								<div><a href="#" class="meta-chat"><span class="fa fa-comment"></span> 3</a></div>
-							</div>
-							<h3 class="heading"><a href="#">Even the all-powerful Pointing has no control about the
-									blind texts</a></h3>
-						</div>
-					</div>
-				</div>
-				<div class="col-md-4 d-flex ftco-animate">
-					<div class="blog-entry align-self-stretch">
-						<a href="blog-single.html" class="block-20 rounded"
-							style="background-image: url('../staic/images/image_3.jpg');">
-						</a>
-						<div class="text p-4">
-							<div class="meta mb-2">
-								<div><a href="#">April 07, 2020</a></div>
-								<div><a href="#">Admin</a></div>
-								<div><a href="#" class="meta-chat"><span class="fa fa-comment"></span> 3</a></div>
-							</div>
-							<h3 class="heading"><a href="#">Even the all-powerful Pointing has no control about the
-									blind texts</a></h3>
-						</div>
-					</div>
-				</div>
+				{% endfor %}
 			</div>
 		</div>
 	</section>
+	
 
 	<section class="ftco-appointment ftco-section ftco-no-pt ftco-no-pb img"
 		style="background-image: url(../static/images/bg_3.jpg);">
@@ -704,7 +679,7 @@
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
 		integrity="sha384-rbs5R2OX/DISn23u8b5pDsn8pUNmZn9u6R3N15AW6P5R2nYqFQ8mOAa6HtJ5F2Fme"
 		crossorigin="anonymous"></script>
-
+		<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>

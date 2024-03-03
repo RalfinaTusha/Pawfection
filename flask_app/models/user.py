@@ -124,3 +124,8 @@ class User():
         query = "INSERT INTO messages (subject, message, user_id,admin_id) VALUES (%(subject)s,%(message)s, %(user_id)s,%(admin_id)s);"
         return connectToMySQL(cls.db_name).query_db(query, data)
     
+    @classmethod
+    def get_user_count(cls):
+        query = "SELECT COUNT(*) FROM users;"
+        return connectToMySQL(cls.db_name).query_db(query)
+    

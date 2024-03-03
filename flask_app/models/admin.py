@@ -86,3 +86,38 @@ class Admin():
     def create_adopt_animal(cls, data):
         query = "INSERT INTO adoptanimals ( name, specie, description, picture) VALUES (%(name)s,%(specie)s,%(description)s,%(picture)s);"
         return connectToMySQL(cls.db_name).query_db(query, data)
+    
+    @classmethod
+    def get_all_posts(cls):
+        query = 'SELECT * FROM posts;'
+        results = connectToMySQL(cls.db_name).query_db(query)
+        posts= []
+        if results:
+            for post in results:
+                posts.append(post)
+            return posts
+        return posts
+    
+    @classmethod
+    def get_post_by_id(cls, data):
+        query = "SELECT * FROM posts WHERE id = %(post_id)s"
+        results = connectToMySQL(cls.db_name).query_db(query, data)
+        if results:
+            return results[0]
+        return False
+    
+    @classmethod
+    def create_post(cls, data):
+        query = "INSERT INTO posts ( title, post, image,admin_id) VALUES (%(title)s,%(post)s,%(image)s,%(admin_id)s);"
+        return connectToMySQL(cls.db_name).query_db(query, data)
+    
+    @classmethod
+    def get_three_posts(cls):
+        query = 'SELECT * FROM posts ORDER BY id DESC LIMIT 3;'
+        results = connectToMySQL(cls.db_name).query_db(query)
+        posts= []
+        if results:
+            for post in results:
+                posts.append(post)
+            return posts
+        return posts

@@ -12,7 +12,6 @@ class Vet():
         self.created_at = data['created_at']
         self.updated_at = data['updated_at']
 
-
     @classmethod
     def create_vet(cls, data):
         query = "INSERT INTO vets (first_name, last_name, email, password, specialization) VALUES ( %(first_name)s, %(last_name)s,%(email)s,%(password)s,%(specialization)s);"
@@ -125,11 +124,13 @@ class Vet():
             "pet_grooming": 2,
             "pet_daycare": 2,
         }
-
         if service in service_vet_mapping:
             return service_vet_mapping[service]
         else:
              return 3
+        
+     
+
 
     
 

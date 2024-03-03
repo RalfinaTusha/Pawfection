@@ -121,7 +121,21 @@ def newanimaladopt():
 
     Admin.create_adopt_animal(data)
     return redirect('/adoptanimalsadmin')
-     
+
+
+@app.route("/addpost", methods=['POST'])
+def addpost():
+    if 'admin_id' not in session:
+        return redirect('/loginadminpage')
+    data = {
+        "title": request.form['title'],
+        "post": request.form['post'],
+        "image": request.form['image'],
+        "admin_id": session['admin_id']
+    }
+    Admin.create_post(data)
+    return redirect('/dashboardadmin')
+
 
 
 

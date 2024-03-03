@@ -30,13 +30,20 @@ def all_users():
     if 'user_id' not in session:
         return redirect('/')
     loggedUserData = {
-        'user_id': session['user_id']
+        'user_id': session['user_id'],
+        
     } 
     loggedUser = User.get_user_by_id(loggedUserData)
     animals=User.get_animals_of_user(loggedUserData)
+    user_count = User.get_user_count() 
+    three_posts=Admin.get_three_posts()
+ 
+
     if not loggedUser:
         return redirect('/logout')
-    return render_template('index.html', loggedUser=loggedUser,animals=animals)
+    return render_template('index.html', loggedUser=loggedUser,animals=animals, user_count=user_count, three_posts=three_posts )
+
+
 
 
  
@@ -202,3 +209,28 @@ def animaldetails(adoptanimal_id):
     }
     adoptanimal = Admin.get_adoptanimal_by_id(data)
     return render_template('animaldetails.html', adoptanimal=adoptanimal)
+
+
+@app.route("/blogpage")
+def blogpage():
+    if 'user_id' not in session:
+        return redirect('/')
+    posts=Admin.get_all_posts()
+    return render_template('blog.html', posts=posts)
+     
+
+@app.route("/post/new/<int:post_id>")
+def newpost(post_id):
+    if 'user_id' not in session:
+        return redirect('/loginadminpage')
+    data = {
+        'post_id': post_id
+    }
+    post = Admin.get_post_by_id(data)
+    return render_template('singlepost.html', post=post)
+
+
+
+ 
+
+ 
