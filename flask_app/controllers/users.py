@@ -75,10 +75,10 @@ def login():
         return redirect('/')
     user = User.get_user_by_email(request.form)
     if not user:
-        flash('This email does not exist.', 'emailLogin')
+        flash('This email does not exist.', 'email')
         return redirect(request.referrer)
     if not bcrypt.check_password_hash(user['password'], request.form['password']):
-        flash('Your password is wrong!', 'passwordLogin')
+        flash('Your password is wrong!', 'password')
         return redirect(request.referrer)
     session['user_id'] = user['id']
     return redirect('/')
@@ -87,20 +87,24 @@ def login():
 def contact():
     if 'user_id' not in session:
         return redirect('/')
-    return render_template('contact.html')
+    three_posts=Admin.get_three_posts()
+
+    return render_template('contact.html', three_posts=three_posts)
 
 @app.route('/services')
 def services():
     if 'user_id' not in session:
         return redirect('/')
-    return render_template('services.html')
+    three_posts=Admin.get_three_posts()
+    return render_template('services.html', three_posts=three_posts)
 
 
 @app.route('/prices')
 def prices():
     if 'user_id' not in session:
         return redirect('/')
-    return render_template('pricing.html')
+    three_posts=Admin.get_three_posts()
+    return render_template('pricing.html', three_posts=three_posts)
 
 
 @app.route('/vets')
@@ -108,7 +112,8 @@ def vets():
     if 'user_id' not in session:
         return redirect('/')
     vets= Vet.get_all_vets()
-    return render_template('vet.html',vets=vets)
+    three_posts=Admin.get_three_posts()
+    return render_template('vet.html',vets=vets, three_posts=three_posts)
 
 @app.route('/profile')
 def profile():
@@ -120,7 +125,8 @@ def profile():
     user = User.get_user_by_id(data)
     animals = User.get_animals_of_user(data)
     vets = Vet.get_all_vets()
-    return render_template('profile.html', user = user, animals = animals, vets = vets)
+    three_posts=Admin.get_three_posts()
+    return render_template('profile.html', user = user, animals = animals, vets = vets, three_posts=three_posts)
 
 
 @app.route('/addanimal', methods=['POST'])
@@ -197,7 +203,9 @@ def adoptanimals():
     if 'user_id' not in session:
         return redirect('/loginadminpage')
     adoptanimals=Admin.get_all_adoptanimals()
-    return render_template('adoptanimals.html' , adoptanimals=adoptanimals)
+    three_posts=Admin.get_three_posts()
+
+    return render_template('adoptanimals.html' , adoptanimals=adoptanimals, three_posts=three_posts)
 
 
 @app.route("/animaldetails/<int:adoptanimal_id>")
@@ -208,7 +216,9 @@ def animaldetails(adoptanimal_id):
         'adoptanimal_id': adoptanimal_id
     }
     adoptanimal = Admin.get_adoptanimal_by_id(data)
-    return render_template('animaldetails.html', adoptanimal=adoptanimal)
+    three_posts=Admin.get_three_posts()
+
+    return render_template('animaldetails.html', adoptanimal=adoptanimal, three_posts=three_posts)
 
 
 @app.route("/blogpage")
@@ -216,7 +226,9 @@ def blogpage():
     if 'user_id' not in session:
         return redirect('/')
     posts=Admin.get_all_posts()
-    return render_template('blog.html', posts=posts)
+    three_posts=Admin.get_three_posts()
+
+    return render_template('blog.html', posts=posts, three_posts=three_posts)
      
 
 @app.route("/post/new/<int:post_id>")
@@ -227,7 +239,8 @@ def newpost(post_id):
         'post_id': post_id
     }
     post = Admin.get_post_by_id(data)
-    return render_template('singlepost.html', post=post)
+    three_posts=Admin.get_three_posts()
+    return render_template('singlepost.html', post=post, three_posts=three_posts)
 
 
 

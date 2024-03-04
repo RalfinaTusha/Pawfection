@@ -44,13 +44,16 @@ def loginadmin():
         "email": request.form['email'],
         "password": request.form['password']
     }
+    if not Admin.validate_admin(data):
+        return redirect('/loginadminpage')
     admin = Admin.get_admin_by_email(data)
     if not admin:
-        flash("Invalid Email/Password")
-        return redirect('/loginadminpage')
+        flash('This email does not exist.', 'email')
+        return redirect(request.referrer)
     if not bcrypt.check_password_hash(admin['password'], request.form['password']):
-        flash("Invalid Email/Password")
-        return redirect('/loginadminpage')
+        flash('Your password is wrong!', 'password')
+        return redirect(request.referrer)
+   
     session['admin_id'] = admin['id']
     return redirect('/dashboardadmin')
 
@@ -136,6 +139,32 @@ def addpost():
     Admin.create_post(data)
     return redirect('/dashboardadmin')
 
+@app.route("/updatevetpage/<int:vet_id>")
+def updatevet(vet_id):
+    if 'admin_id' not in session:
+        return redirect('/loginadminpage')
+    vetData = {
+        "vet_id": vet_id
+    }
+    vet = Vet.get_vet_by_id(vetData)
+    return render_template('updatevet.html', vet=vet)
+
+@app.route("/updatevet/<int:vet_id>", methods=['POST'])
+def updatevetdata(vet_id):
+    if 'admin_id' not in session:
+        return redirect('/loginadminpage')
+    data = {
+        "vet_id": vet_id,
+        "first_name": request.form['first_name'],
+        "last_name": request.form['last_name'],
+        "email": request.form['email'],
+        "specialization": request.form['specialization']
+    }
+    Admin.update_vet(data)
+    return redirect('/dashboardadmin')
+     
+   
+ 
 
 
 

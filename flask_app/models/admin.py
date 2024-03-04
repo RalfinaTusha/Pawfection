@@ -1,4 +1,5 @@
 from flask_app.config.mysqlconnection import connectToMySQL
+from flask import flash
 import re
 
 class Admin():
@@ -49,7 +50,7 @@ class Admin():
 
     @classmethod
     def get_all_messages(cls):
-        query = 'SELECT * FROM messages;'
+        query = 'select * from messages left join users on messages.user_id = users.id;'
         results = connectToMySQL(cls.db_name).query_db(query)
         messages= []
         if results:
@@ -121,3 +122,19 @@ class Admin():
                 posts.append(post)
             return posts
         return posts
+    
+    @classmethod
+    def validate_admin(cls, data):
+        is_valid = True
+        if len(data['email']) < 6:
+            flash("Email must be at least 6 characters, 'email'")
+            is_valid = False
+        if len(data['password']) <8 :
+            flash("Password must be at least 8 characters", 'password')
+            is_valid = False
+        return is_valid
+    
+    @classmethod
+    def update_vet(cls, data):
+        query = "UPDATE vets SET first_name = %(first_name)s, last_name = %(last_name)s, email=%(email)s, specialization=%(specialization)s WHERE id = %(vet_id)s;"
+        return connectToMySQL(cls.db_name).query_db(query, data)

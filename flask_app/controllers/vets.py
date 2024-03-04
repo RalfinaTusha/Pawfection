@@ -3,6 +3,7 @@ from email.mime.text import MIMEText
 from flask_app import app
 from flask import render_template, redirect, session, request, flash
 from flask_bcrypt import Bcrypt
+from flask_app.models.admin import Admin
 bcrypt = Bcrypt(app)
 from flask_app.models.vet import Vet
   
@@ -82,10 +83,10 @@ def loginvet():
         return redirect('/dashboardvet')
     vet = Vet.get_vet_by_email(request.form)
     if not vet:
-        flash('This email does not exist.', 'emailLogin')
+        flash('This email does not exist.', 'email')
         return redirect(request.referrer)
     if not bcrypt.check_password_hash(vet['password'], request.form['password']):
-        flash('Your password is wrong!', 'passwordLogin')
+        flash('Your password is wrong!', 'password')
         return redirect(request.referrer)
     session['vet_id'] = vet['id']
     return redirect('/dashboardvet')
@@ -100,9 +101,10 @@ def all_vets():
     loggedVet = Vet.get_vet_by_id(loggedVetData)
     animals=Vet.animals_by_vet(loggedVetData)
     appointments=Vet.get_appointments_by_vet(loggedVetData)
+    three_posts=Admin.get_three_posts()
     if not loggedVet:
         return redirect('/logoutvet')
-    return render_template('indexvet.html', loggedVet=loggedVet, animals=animals,appointments=appointments)
+    return render_template('indexvet.html', loggedVet=loggedVet, animals=animals,appointments=appointments, three_posts=three_posts)
 
 UPLOAD_FOLDER = 'flask_app/static/images'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -135,7 +137,8 @@ def new_profil_pic():
 def contactvetpage():
     if 'vet_id' not in session:
         return redirect('/loginvetpage')
-    return render_template('contactvet.html')
+    three_posts=Admin.get_three_posts()
+    return render_template('contactvet.html', three_posts=three_posts)
 
 @app.route('/contactvet', methods=['POST'])
 def contactvet():

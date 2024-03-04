@@ -67,7 +67,7 @@
 
 			<h1 class="mb-2 title">Sign in</h1>
  			<input type="email" placeholder="Email"  class="mb-2" name="email" />
-             {% with messages = get_flashed_messages(category_filter=["emailLogin"]) %}
+             {% with messages = get_flashed_messages(category_filter=["email"]) %}
              {% if messages %}
              {% for message in messages %}
              <p class="text-danger text-center">{{message}}</p>
@@ -99,7 +99,7 @@
 				<button class="ghost" id="signIn">Sign In</button>
 			</div>
 			<div class="overlay-panel overlay-right">
-				<h1>Hello, Friend!</h1>
+				<h1>Welcome,Pet Lover!</h1>
 				<p>Enter your personal details and start journey with us</p>
 				<button class="ghost" id="signUp">Sign Up</button>
 			</div>
