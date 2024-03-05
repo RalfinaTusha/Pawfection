@@ -1,8 +1,10 @@
 from flask_app import app
-from flask import jsonify, render_template, redirect, session, request, flash
+from flask import jsonify, render_template, redirect, session, request, flash, url_for
+import paypalrestsdk
 from flask_app.models.admin import Admin
 from flask_app.models.user import User
 from flask_app.models.vet import Vet
+from flask_app.models.package import Package
 from flask_bcrypt import Bcrypt
 bcrypt = Bcrypt(app)
 import os   
@@ -37,11 +39,12 @@ def all_users():
     animals=User.get_animals_of_user(loggedUserData)
     user_count = User.get_user_count() 
     three_posts=Admin.get_three_posts()
+    packages=Package.get_all_packages()
  
 
     if not loggedUser:
         return redirect('/logout')
-    return render_template('index.html', loggedUser=loggedUser,animals=animals, user_count=user_count, three_posts=three_posts )
+    return render_template('index.html', loggedUser=loggedUser,animals=animals, user_count=user_count, three_posts=three_posts ,packages=packages)
 
 
 
@@ -143,12 +146,12 @@ def add_animal():
     User.add_animal(data)
     return redirect('/profile')
 
-
+UPLOAD_FOLDER = 'flask_app/static/images'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 @app.route('/profilepic/user', methods=['POST'])
 def new_profil_pic_user():
     if 'user_id' not in session:
         return redirect('/loginpage')
-    
     data = {"id": session['user_id']}
     
     if 'image' in request.files:
@@ -165,7 +168,7 @@ def logout():
     session.clear()
     return redirect('/loginpage')
 
-#add appointment
+
 @app.route('/addappointment', methods=['POST'])
 def add_appointment():
     if 'user_id' not in session:
@@ -243,7 +246,85 @@ def newpost(post_id):
     return render_template('singlepost.html', post=post, three_posts=three_posts)
 
 
+@app.route('/checkout/paypal/<int:id>')
+def checkoutPaypal(id):
+    if 'user_id' not in session:
+            return redirect('/')
+    package=Package.get_package_by_id({"id":id})
+    totalPrice=package['price']
 
- 
+    try:
+        paypalrestsdk.configure({
+            "mode": "sandbox", # Change this to "live" when you're ready to go live
+            "client_id": "ASBDUsNK58MqiZV3IrKMuvf92gnff2C8HWhFaMHeBDNFdDLNKLvAjjegKMAmcCvfXfAXp2v8m5RV7cap",
+            "client_secret": "EEISu-DCwafxaYtx7vZgpSToCezs8mS48yGjqOQ43x839pd_btXyuNO5cmGu6Ul7VxhOEvN0MBUaaSAn"
+        })
 
- 
+        payment = paypalrestsdk.Payment({
+            "intent": "sale",
+            "payer": {
+                "payment_method": "paypal"
+            },
+            "transactions": [{
+                "amount": {
+                    "total": totalPrice,
+                    "currency": "USD"  # Adjust based on your currency
+                },
+                "description": f"Pagesa"
+            }],
+            "redirect_urls": {
+                "return_url": url_for('paymentSuccess', _external=True, totalPrice=totalPrice, package_id=id),
+                "cancel_url": "http://example.com/cancel"
+            }
+        })
+
+        if payment.create():
+            approval_url = next(link.href for link in payment.links if link.rel == 'approval_url')
+            return redirect(approval_url)
+        else:
+            flash('Something went wrong with your payment', 'creditCardDetails')
+            return redirect(request.referrer)
+    except paypalrestsdk.ResourceNotFound as e:
+        flash('Something went wrong with your payment', 'creditCardDetails')
+        return redirect(request.referrer)
+@app.route("/success", methods=["GET"])
+def paymentSuccess():
+    payment_id = request.args.get('paymentId', '')
+    payer_id = request.args.get('PayerID', '')
+    try:
+        paypalrestsdk.configure({
+            "mode": "sandbox", # Change this to "live" when you're ready to go live
+            "client_id": "ASBDUsNK58MqiZV3IrKMuvf92gnff2C8HWhFaMHeBDNFdDLNKLvAjjegKMAmcCvfXfAXp2v8m5RV7cap",
+            "client_secret": "EEISu-DCwafxaYtx7vZgpSToCezs8mS48yGjqOQ43x839pd_btXyuNO5cmGu6Ul7VxhOEvN0MBUaaSAn"
+        })
+        payment = paypalrestsdk.Payment.find(payment_id)
+        if payment.execute({"payer_id": payer_id}):
+            print("////////////////////////////////////////////////////////////////")
+            
+            ammount = request.args.get('totalPrice')
+            status = 'Paid'
+            user_id = session['user_id']
+            data = {
+                'ammount': ammount,
+                'status': status,
+                'package_id': request.args.get('package_id'),
+                'user_id': user_id
+            }
+            Package.createPayment(data)
+           
+            flash('Your payment was successful!', 'paymentSuccessful')
+            return redirect('/dashboard')
+        else:
+            print("****************************************************************************")
+            flash('Something went wrong with your payment', 'paymentNotSuccessful')
+            return redirect('/')
+    except paypalrestsdk.ResourceNotFound as e:
+        flash('Something went wrong with your payment', 'paymentNotSuccessful')
+        return redirect('/dashboard')
+
+
+@app.route("/cancel", methods=["GET"])
+def paymentCancel():
+    flash('Payment was canceled', 'paymentCanceled')
+    return redirect('/dashboard')
+
