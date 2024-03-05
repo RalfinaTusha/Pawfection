@@ -17,7 +17,7 @@
 <div class="container" id="container">
 	<div class="form-container sign-up-container">
 		<form action="/register" method="post">
-			<h1  class="mb-2 title">Create Account</h1>
+			<h1  class="mb-2 title" style="font-family: 'Times New Roman', Times, serif;">Create Account</h1>
 			<input type="text" placeholder="First Name" class="mb-2" name="first_name" />
             {% with messages = get_flashed_messages(category_filter=["firstName"]) %}
             {% if messages %}
@@ -65,7 +65,7 @@
 		<form action="/login" method="post">
             <a class="navbar-brand" href="#"><span class="fa fa-paw"></span>Pawfection</a>
 
-			<h1 class="mb-2 title">Sign in</h1>
+			<h1 class="mb-2 title" style="font-family: 'Times New Roman', Times, serif;">Sign in</h1>
  			<input type="email" placeholder="Email"  class="mb-2" name="email" />
              {% with messages = get_flashed_messages(category_filter=["email"]) %}
              {% if messages %}
@@ -85,7 +85,7 @@
  			<button type="submit">Sign In</button>
             <br>
              <div>
-                <a href="/loginvetpage" style="text-decoration: none; color: #2e6b49; font-weight: bold; font-size: 16px;">ARE YOU A VET?</a>
+                <a href="/loginvetpage" style="font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;text-decoration: none; color: #2e6b49; font-weight: bold; font-size: 16px;">ARE YOU A VET?</a>
             </div>
             
 		</form>
@@ -94,14 +94,14 @@
 	<div class="overlay-container">
 		<div class="overlay">
 			<div class="overlay-panel overlay-left">
-				<h1>Welcome Back!</h1>
+				<h1 style="font-family: 'Times New Roman', Times, serif;">Welcome Back!</h1>
 				<p>To keep connected with us please login with your personal info</p>
 				<button class="ghost" id="signIn">Sign In</button>
 			</div>
 			<div class="overlay-panel overlay-right">
-				<h1>Welcome,Pet Lover!</h1>
+				<h1 style="font-family: 'Times New Roman', Times, serif;">Welcome,Pet Lover!</h1>
 				<p>Enter your personal details and start journey with us</p>
-				<button class="ghost" id="signUp">Sign Up</button>
+				<button class="ghost" id="signUp" >Sign Up</button>
 			</div>
 		</div>
 	</div>

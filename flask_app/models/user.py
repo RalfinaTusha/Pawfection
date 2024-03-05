@@ -126,6 +126,21 @@ class User():
     
     @classmethod
     def get_user_count(cls):
-        query = "SELECT COUNT(*) FROM users;"
-        return connectToMySQL(cls.db_name).query_db(query)
+        query = "SELECT COUNT(*) as total FROM users;"
+        result= connectToMySQL(cls.db_name).query_db(query)
+        user=0
+        if result:
+            user=result[0]
+            return user
+        return user
+    
+    @classmethod
+    def get_animal_count(cls):
+        query = "SELECT COUNT(*) as total FROM animals;"
+        result= connectToMySQL(cls.db_name).query_db(query)
+        animal=0
+        if result:
+            animal=result[0]
+            return animal
+        return animal
     

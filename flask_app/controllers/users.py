@@ -37,14 +37,15 @@ def all_users():
     } 
     loggedUser = User.get_user_by_id(loggedUserData)
     animals=User.get_animals_of_user(loggedUserData)
-    user_count = User.get_user_count() 
+    user_count = User.get_user_count()
+    animal_count = User.get_animal_count() 
     three_posts=Admin.get_three_posts()
     packages=Package.get_all_packages()
  
 
     if not loggedUser:
         return redirect('/logout')
-    return render_template('index.html', loggedUser=loggedUser,animals=animals, user_count=user_count, three_posts=three_posts ,packages=packages)
+    return render_template('index.html', loggedUser=loggedUser,animals=animals, user_count=user_count, three_posts=three_posts ,packages=packages, animal_count=animal_count)
 
 
 
@@ -250,14 +251,19 @@ def newpost(post_id):
 def checkoutPaypal(id):
     if 'user_id' not in session:
             return redirect('/')
-    package=Package.get_package_by_id({"id":id})
-    totalPrice=package['price']
+    
+    data = {
+        'id': id
+    }
+    package = Package.get_package_by_id(data)
+    
+    totalPrice = package['price']
 
     try:
         paypalrestsdk.configure({
             "mode": "sandbox", # Change this to "live" when you're ready to go live
-            "client_id": "ASBDUsNK58MqiZV3IrKMuvf92gnff2C8HWhFaMHeBDNFdDLNKLvAjjegKMAmcCvfXfAXp2v8m5RV7cap",
-            "client_secret": "EEISu-DCwafxaYtx7vZgpSToCezs8mS48yGjqOQ43x839pd_btXyuNO5cmGu6Ul7VxhOEvN0MBUaaSAn"
+            "client_id": "AYckYn5asNG7rR9A2gycCw-N2Du3GXH4ytNfU5ueLeYKaUwjKFL-aZMu3owCwfs_D1fydp2W-HSVieZ0",
+            "client_secret": "EJu8H94UNn6b2Xigp26rf1pIs6NW-WrweGw-RkboWLUjWfHK2m46qrFObh_rL_HPSwvfipNyFoYdoa3K"
         })
 
         payment = paypalrestsdk.Payment({
@@ -270,10 +276,10 @@ def checkoutPaypal(id):
                     "total": totalPrice,
                     "currency": "USD"  # Adjust based on your currency
                 },
-                "description": f"Pagesa"
+                "description": f"Pagese per parkim per makinen me targe orë!"
             }],
             "redirect_urls": {
-                "return_url": url_for('paymentSuccess', _external=True, totalPrice=totalPrice, package_id=id),
+                "return_url": url_for('paymentSuccess', _external=True, totalPrice=totalPrice,package_id=id),
                 "cancel_url": "http://example.com/cancel"
             }
         })
@@ -287,6 +293,12 @@ def checkoutPaypal(id):
     except paypalrestsdk.ResourceNotFound as e:
         flash('Something went wrong with your payment', 'creditCardDetails')
         return redirect(request.referrer)
+
+
+
+
+
+
 @app.route("/success", methods=["GET"])
 def paymentSuccess():
     payment_id = request.args.get('paymentId', '')
@@ -294,28 +306,30 @@ def paymentSuccess():
     try:
         paypalrestsdk.configure({
             "mode": "sandbox", # Change this to "live" when you're ready to go live
-            "client_id": "ASBDUsNK58MqiZV3IrKMuvf92gnff2C8HWhFaMHeBDNFdDLNKLvAjjegKMAmcCvfXfAXp2v8m5RV7cap",
-            "client_secret": "EEISu-DCwafxaYtx7vZgpSToCezs8mS48yGjqOQ43x839pd_btXyuNO5cmGu6Ul7VxhOEvN0MBUaaSAn"
+            "client_id": "AYckYn5asNG7rR9A2gycCw-N2Du3GXH4ytNfU5ueLeYKaUwjKFL-aZMu3owCwfs_D1fydp2W-HSVieZ0",
+            "client_secret": "EJu8H94UNn6b2Xigp26rf1pIs6NW-WrweGw-RkboWLUjWfHK2m46qrFObh_rL_HPSwvfipNyFoYdoa3K"
         })
         payment = paypalrestsdk.Payment.find(payment_id)
         if payment.execute({"payer_id": payer_id}):
-            print("////////////////////////////////////////////////////////////////")
+            
+            print("////////////////////////////////////////////////////")
             
             ammount = request.args.get('totalPrice')
             status = 'Paid'
             user_id = session['user_id']
+            package_id = request.args.get('package_id')
             data = {
                 'ammount': ammount,
                 'status': status,
-                'package_id': request.args.get('package_id'),
-                'user_id': user_id
+                'user_id': user_id,
+                'package_id': package_id,
             }
             Package.createPayment(data)
            
             flash('Your payment was successful!', 'paymentSuccessful')
             return redirect('/dashboard')
         else:
-            print("****************************************************************************")
+            print("")
             flash('Something went wrong with your payment', 'paymentNotSuccessful')
             return redirect('/')
     except paypalrestsdk.ResourceNotFound as e:
@@ -327,4 +341,3 @@ def paymentSuccess():
 def paymentCancel():
     flash('Payment was canceled', 'paymentCanceled')
     return redirect('/dashboard')
-

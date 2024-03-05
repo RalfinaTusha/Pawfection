@@ -1,6 +1,6 @@
 from socket import SocketIO
 from flask_app import app
-from flask_app.controllers import users,vets,admins
+from flask_app.controllers import users,vets,admins,adoptions 
 from flask_socketio import SocketIO, send
 
 socketio = SocketIO(app, cors_allowed_origins="*")

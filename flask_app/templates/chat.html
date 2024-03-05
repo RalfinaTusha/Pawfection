@@ -8,12 +8,91 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"
         integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA=="
         crossorigin="anonymous"></script>
-    <title>Document</title>
+    <title>Pawfection</title>
+	<link rel="icon" href="../static/images/icon.png" type="image/jpg">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:200,300,400,500,600,700,800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+ 
+
+    <link rel="stylesheet" href="../static/css/animate.css">
+    
+    <link rel="stylesheet" href="../static/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="../static/css/owl.theme.default.min.css">
+    <link rel="stylesheet" href="../static/css/magnific-popup.css">
+
+
+    <link rel="stylesheet" href="../static/css/bootstrap-datepicker.css">
+    <link rel="stylesheet" href="../static/css/jquery.timepicker.css">
+
+    <link rel="stylesheet" href="../static/css/flaticon.cs">
+    <link rel="stylesheet" href="../static/css/style.css">
+    <link rel="stylesheet" href="../static/css/button.css">
+
 </head>
 
 <body>
-    <div class="messages">
+    <div class="wrap">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 d-flex align-items-center">
+                    <p class="mb-0 phone pl-md-2">
+                        <a href="#" class="mr-2"><span class="fa fa-phone mr-1"></span> +00 1234 567</a> 
+                        <a href="#"><span class="fa fa-paper-plane mr-1"></span> pawfection@vetclinic.com</a>
+                    </p>
+                </div>
+                <div class="col-md-6 d-flex justify-content-md-end">
+                    <div class="social-media">
+                    <p class="mb-0 d-flex">
+                        <a href="#" class="d-flex align-items-center justify-content-center"><span class="fa fa-facebook"><i class="sr-only">Facebook</i></span></a>
+                        <a href="#" class="d-flex align-items-center justify-content-center"><span class="fa fa-twitter"><i class="sr-only">Twitter</i></span></a>
+                        <a href="#" class="d-flex align-items-center justify-content-center"><span class="fa fa-instagram"><i class="sr-only">Instagram</i></span></a>
+                     </p>
+            </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
+    <div class="container">
+        <a class="navbar-brand" href="/dashboard"><span class="fa fa-paw mr-2"></span>Pawfection</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="fa fa-bars"></span> Menu
+      </button>
+      <div class="collapse navbar-collapse" id="ftco-nav">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item  "><a href="/dashboard" class="nav-link">Home</a></li>
+            <li class="nav-item"><a href="/profile" class="nav-link">Profile</a></li>
+            <li class="nav-item"><a href="/vets" class="nav-link">Vets</a></li>
+            <li class="nav-item"><a href="/services" class="nav-link">Services</a></li>
+           <li class="nav-item"><a href="/prices" class="nav-link">Pricing</a></li>
+           <li class="nav-item active"><a href="/contact" class="nav-link">Contact</a></li>
+          <li class="nav-item"><a href="/logout" class="nav-link">LOGOUT</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+<!-- END nav -->
+ 
+    <!-- <div class="messages">
         <input placeholder="Message" id="messageInput" />
+    </div> -->
+  <div class="container p-4">
+
+    <div class="card">
+        <div class="chat-header">Chat</div>
+          <div class="chat-window">
+            <ul class="message-list"></ul>
+          </div>
+          <div class="chat-input  ">
+              <input type="text" id="messageInput" class="message-input" placeholder="Type your message here">
+              <button class="send-button">Send</button>
+          </div>
+          <div class="messages p-3"></div>
+        </div>
     </div>
 
     <script>
