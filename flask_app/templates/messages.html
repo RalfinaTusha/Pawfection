@@ -94,7 +94,7 @@
           <td>{{message.subject}}</td>
           <td>{{message.message}}</td>
           <td>{{message.created_at}}</td>
-          <td><a href=" " class="btn btn-primary">Answer</a></td>
+          <td><a href="/answer/{{message.id}}" class="btn btn-primary">Answer</a></td>
         </tr>
         {%endfor%}
       </tbody>

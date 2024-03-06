@@ -68,7 +68,7 @@
 					<li class="nav-item active"><a href="/profile" class="nav-link">Profile</a></li>
 					<li class="nav-item"><a href="/vets" class="nav-link">Vets</a></li>
 					<li class="nav-item"><a href="/services" class="nav-link">Services</a></li>
-					<li class="nav-item"><a href="/prices" class="nav-link">Pricing</a></li>
+					<li class="nav-item "><a href="/adoptanimals" class="nav-link">Animals to adopt</a></li>
 					<li class="nav-item"><a href="/contact" class="nav-link">Contact</a></li>
 					<li class="nav-item"><a href="/logout" class="nav-link">LOGOUT</a></li>
 				</ul>
@@ -191,7 +191,7 @@
 									<img src="{{ url_for('static', filename='images/' + user.profile_pic) }}"
 										alt="Profile Picture" class="img-fluid rounded-circle profile-pic-user">
 									{% else %}
-									<img src="../static/images/gallery-5.jpg" alt="" class="img-fluid rounded-circle"
+									<img src="../static/images/default.jpg" alt="" class=" rounded-circle"
 										id="profil-photo">
 									{% endif %}
 								</div>

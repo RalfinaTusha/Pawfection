@@ -1,5 +1,3 @@
-import random
-import string
 from flask_app.config.mysqlconnection import connectToMySQL
 from flask import flash
 import re
@@ -87,7 +85,7 @@ class Admin():
     
     @classmethod
     def create_adopt_animal(cls, data):
-        query = "INSERT INTO adoptanimals ( name, specie, description, picture) VALUES (%(name)s,%(specie)s,%(description)s,%(picture)s);"
+        query = "INSERT INTO adoptanimals ( name, specie, description, picture,age) VALUES (%(name)s,%(specie)s,%(description)s,%(picture)s,%(age)s);"
         return connectToMySQL(cls.db_name).query_db(query, data)
     
     @classmethod
@@ -143,52 +141,11 @@ class Admin():
     
     @classmethod
     def get_adoptrequests(cls, data):
-        query = "SELECT adoptions.*, users.* FROM adoptions LEFT JOIN users ON adoptions.user_id = users.id WHERE adoptions.adoptanimal_id = %(adoptanimal_id)s;"
+        query = "SELECT * FROM adoptions WHERE adoptanimal_id = %(adoptanimal_id)s left join users on adoptions.user_id = users.id;"
         results = connectToMySQL(cls.db_name).query_db(query, data)
-        adoptrequests = []
+        adoptions = []
         if results:
-            for adoptrequest in results:
-                adoptrequests.append(adoptrequest)
-            return adoptrequests
-        return adoptrequests
-    
-    @classmethod
-    def delete_vet(cls, data):
-        query = "DELETE FROM vets WHERE id = %(vet_id)s;"
-        return connectToMySQL(cls.db_name).query_db(query, data)
-    
-    @classmethod
-    def delete_appointments_of_vet(cls, data):
-        query = "DELETE FROM appointments WHERE vet_id = %(vet_id)s;"
-        return connectToMySQL(cls.db_name).query_db(query, data)
-    
-    @classmethod
-    def delete_animals_of_vet(cls, data):
-        query = "DELETE FROM animals WHERE vet_id = %(vet_id)s;"
-        return connectToMySQL(cls.db_name).query_db(query, data)
-    
-    @classmethod
-    def get_pending_appointments_for_vet(cls, data):
-        query = "SELECT u.email FROM appointments a JOIN users u ON a.user_id = u.id WHERE a.vet_id = %(vet_id)s AND a.accepted = 0;"
-        results = connectToMySQL(cls.db_name).query_db(query, data)
-        appointments = []
-        if results:
-            for appointment in results:
-                appointments.append(appointment)
-            return appointments
-        return appointments
-    
-    @classmethod
-    def generate_random_password(cls):
-        characters = string.ascii_letters + string.digits + string.punctuation
-        return ''.join(random.choice(characters) for i in range(8))
-    
-
-    @classmethod
-    def get_message_by_id(cls, data):
-        query = "SELECT * FROM messages LEFT JOIN users ON messages.user_id = users.id WHERE messages.id = %(message_id)s;"
-        results = connectToMySQL(cls.db_name).query_db(query, data)
-        if results:
-            return results[0]
-        return False
-    
+            for adoption in results:
+                adoptions.append(adoption)
+            return adoptions
+        return adoptions

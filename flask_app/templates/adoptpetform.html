@@ -83,7 +83,7 @@
         <div class="row d-md-flex justify-content-end">
             <div class="col-md-12 col-lg-6 half p-3 py-5 pl-lg-5 ftco-animate">
                 <h2 class="mb-4">We need a reason why you should be the one to adopt this pet</h2>
-                <form action="/adoptpetform" class="appointment" method="post">
+                <form action="/adoptpet/{{ adoptanimal.id }}" class="appointment" method="post">
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
@@ -99,6 +99,13 @@
                             <div class="form-group">
                                 <textarea name="reason" id="reason" cols="30" rows="7" class="form-control"
                                     placeholder="Reason"></textarea>
+                                    {% with messages = get_flashed_messages(category_filter=["reason"]) %}
+                                    {% if messages %}
+                                    {% for message in messages %}
+                                    <p class="text-danger text-center">{{message}}</p>
+                                    {% endfor %}
+                                    {% endif %}
+                                    {% endwith %}
                             </div>
                         </div>
                         <div class="col-md-12">

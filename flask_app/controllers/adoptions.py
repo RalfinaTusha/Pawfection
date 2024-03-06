@@ -13,12 +13,33 @@ from datetime import datetime
 from werkzeug.utils import secure_filename
 
 
-@app.route('/adoptpet/<int:adoptanimal_id>')
-def addoptpet(adoptanimal_id):
+@app.route('/adoptpet/<int:adoptanimal_id>', methods=['GET', 'POST'])
+def adopt_pet(adoptanimal_id):
     if 'user_id' not in session:
         return redirect('/loginpage')
-    adoptanimal=Adoption.get_adoptanimal_by_id(adoptanimal_id)
-    return render_template('adoptpetform.html', adoptanimal=adoptanimal)
+
+    adoptanimal = Adoption.get_adoptanimal_by_id(adoptanimal_id)
+    print(adoptanimal)
+    if not adoptanimal:
+        return render_template('404.html', message='Adopted animal not found')  # Handle case when adoptanimal is not found
+
+    if request.method == 'GET':
+        return render_template('adoptpetform.html', adoptanimal=adoptanimal)
+    elif request.method == 'POST':
+        if not Adoption.validate_adoption(request.form):
+            return redirect(request.referrer)
+        data = {
+            "user_id": session['user_id'],
+            "adoptanimal_id": adoptanimal_id,
+            "reason": request.form['reason'],
+            "adoption_date": request.form['adoption_date']
+        }
+        Adoption.create_adoption(data)
+        return redirect('/dashboard')
+    
+    
+
+
 
  
 

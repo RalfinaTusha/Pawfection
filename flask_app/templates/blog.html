@@ -42,7 +42,7 @@
 		</div>
 		<nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
 	    <div class="container">
-	    	<a class="navbar-brand" href="index.html"><span class="fa fa-paw mr-2"></span>Pawfection</a>
+	    	<a class="navbar-brand" href="/dashboard"><span class="fa fa-paw mr-2"></span>Pawfection</a>
 	      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
 	        <span class="fa fa-bars"></span> Menu
 	      </button>
@@ -53,6 +53,9 @@
  	        	<li class="nav-item"><a href="/services" class="nav-link">Services</a></li>
  	          <li class="nav-item active"><a href="/blogpage" class="nav-link">Blog</a></li>
 	          <li class="nav-item"><a href="/contact" class="nav-link">Contact</a></li>
+            <li class="nav-item"><a href="/logout" class="nav-link">LOGOUT</a></li>
+
+
 	        </ul>
 	      </div>
 	    </div>
@@ -76,14 +79,14 @@
           {% for post in posts %}
           <div class="col-md-4 d-flex ftco-animate">
             <div class="blog-entry align-self-stretch">
-              <a href="/post/new/{{ post.id }}" class="block-20 rounded" style="background-image: url('../static/images/{{post.image}}');">
+              <a href="/post/{{ post.id }}" class="block-20 rounded" style="background-image: url('../static/images/{{post.image}}');">
               </a>
               <div class="text p-4">
               	<div class="meta mb-2">
                   <div><a href="#">{{post.created_at}}</a></div>
                   <div><a href="#">Admin</a></div>
                  </div>
-                <h3 class="heading"><a href="/post/new/{{ post.id }}">{{post.title}}</a></h3>
+                <h3 class="heading"><a href="/post/{{ post.id }}">{{post.title}}</a></h3>
               </div>
             </div>
           </div>

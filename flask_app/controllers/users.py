@@ -24,7 +24,6 @@ def index():
 def loginPage():
     if 'user_id' in session:
         return redirect('/')
-    
     return render_template('login.html')
 
 @app.route('/dashboard')
@@ -41,11 +40,10 @@ def all_users():
     animal_count = User.get_animal_count() 
     three_posts=Admin.get_three_posts()
     packages=Package.get_all_packages()
- 
-
+    vets=Vet.get_all_vets()
     if not loggedUser:
         return redirect('/logout')
-    return render_template('index.html', loggedUser=loggedUser,animals=animals, user_count=user_count, three_posts=three_posts ,packages=packages, animal_count=animal_count)
+    return render_template('index.html', loggedUser=loggedUser,animals=animals, user_count=user_count, three_posts=three_posts ,packages=packages, animal_count=animal_count, vets=vets)
 
 
 
@@ -68,9 +66,7 @@ def register():
         'confirm_password': request.form['confirm_password']
     }
     user_id = User.create_user(data)
-
     session['user_id'] = user_id
-
     return redirect('/')
 
 @app.route('/login', methods=['POST'])
@@ -101,15 +97,6 @@ def services():
         return redirect('/')
     three_posts=Admin.get_three_posts()
     return render_template('services.html', three_posts=three_posts)
-
-
-@app.route('/prices')
-def prices():
-    if 'user_id' not in session:
-        return redirect('/')
-    three_posts=Admin.get_three_posts()
-    return render_template('pricing.html', three_posts=three_posts)
-
 
 @app.route('/vets')
 def vets():
@@ -149,6 +136,7 @@ def add_animal():
 
 UPLOAD_FOLDER = 'flask_app/static/images'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
 @app.route('/profilepic/user', methods=['POST'])
 def new_profil_pic_user():
     if 'user_id' not in session:
@@ -175,15 +163,16 @@ def add_appointment():
     if 'user_id' not in session:
         return redirect('/loginpage')
     service = request.form['service']
-    vet_id = Vet.get_vet_id_based_on_service(service)
+    vet_id = request.form['vet']  # Assuming your dropdown has a name attribute 'vet'
+        
     data = {
-        "user_id": session['user_id'],
-        'name': request.form['name'],
-        "date": request.form['date'],
-        "time": request.form['time'],
-        'service': request.form['service'],
-        'message': request.form['message'],
-        'vet_id': vet_id
+            "user_id": session['user_id'],
+            'name': request.form['name'],
+            "date": request.form['date'],
+            "time": request.form['time'],
+            'service': service,
+            'message': request.form['message'],
+            'vet_id': vet_id
     }
     User.add_appointment(data)
     return redirect('/')
@@ -208,7 +197,6 @@ def adoptanimals():
         return redirect('/loginadminpage')
     adoptanimals=Admin.get_all_adoptanimals()
     three_posts=Admin.get_three_posts()
-
     return render_template('adoptanimals.html' , adoptanimals=adoptanimals, three_posts=three_posts)
 
 
@@ -221,7 +209,6 @@ def animaldetails(adoptanimal_id):
     }
     adoptanimal = Admin.get_adoptanimal_by_id(data)
     three_posts=Admin.get_three_posts()
-
     return render_template('animaldetails.html', adoptanimal=adoptanimal, three_posts=three_posts)
 
 
@@ -231,11 +218,10 @@ def blogpage():
         return redirect('/')
     posts=Admin.get_all_posts()
     three_posts=Admin.get_three_posts()
-
     return render_template('blog.html', posts=posts, three_posts=three_posts)
      
 
-@app.route("/post/new/<int:post_id>")
+@app.route("/post/<int:post_id>")
 def newpost(post_id):
     if 'user_id' not in session:
         return redirect('/loginadminpage')
@@ -251,14 +237,11 @@ def newpost(post_id):
 def checkoutPaypal(id):
     if 'user_id' not in session:
             return redirect('/')
-    
     data = {
         'id': id
     }
     package = Package.get_package_by_id(data)
-    
     totalPrice = package['price']
-
     try:
         paypalrestsdk.configure({
             "mode": "sandbox", # Change this to "live" when you're ready to go live
@@ -293,11 +276,6 @@ def checkoutPaypal(id):
     except paypalrestsdk.ResourceNotFound as e:
         flash('Something went wrong with your payment', 'creditCardDetails')
         return redirect(request.referrer)
-
-
-
-
-
 
 @app.route("/success", methods=["GET"])
 def paymentSuccess():

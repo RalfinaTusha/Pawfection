@@ -15,13 +15,6 @@ import smtplib
 UPLOAD_FOLDER = '/flask_app/static/images'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-# app.config['MAIL_SERVER']='smtp.gmail.com'
-# app.config['MAIL_PORT'] = 465
-# app.config['MAIL_USERNAME'] = 'inatusha1@gmail.com'
-# app.config['MAIL_PASSWORD'] = 'godcnjwbemlgkotp'
-# app.config['MAIL_USE_TLS'] = True
-# app.config['MAIL_USE_SSL'] = False
-
 ADMINEMAIL = 'inatusha1@gmail.com'
 PASSWORD = "godcnjwbemlgkotp"
 
@@ -67,9 +60,6 @@ def appointment(appointment_id):
 
     return redirect(request.referrer)
  
-
- 
-
 @app.route('/loginvetpage')
 def loginVetPage():
     session.clear()
@@ -115,12 +105,9 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 def new_profil_pic():
     if 'vet_id' not in session:
         return redirect('/loginvetpage')
-    
     data = {"id": session['vet_id']}
-    
     if 'image' in request.files:
         image = request.files['image']
-        
         if image.filename != '':
             current_time = datetime.now().strftime("%Y%m%d%H%M%S")
             filename = secure_filename(image.filename)
@@ -129,7 +116,6 @@ def new_profil_pic():
             
             data["image"] = current_time + filename
             Vet.update_profile_pic(data)
-    
     return redirect('/dashboardvet')
 
 
@@ -154,7 +140,6 @@ def contactvet():
     SENDER = ADMINEMAIL
     SUBJECT = subject
 
-    # Create MIMEText object to handle Unicode characters
     msg = MIMEMultipart()
     msg.attach(MIMEText(message, 'plain', 'utf-8'))
 
@@ -174,7 +159,6 @@ def contactvet():
         # Handle the exception (print or log the error)
         print(f"Error: {e}")
         return "Error sending email"
-
     return redirect('/dashboardvet')
     
 

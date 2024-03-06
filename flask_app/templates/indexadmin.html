@@ -55,7 +55,7 @@
   </div>
   <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
     <div class="container">
-      <a class="navbar-brand" href="/dashboard"><span class="fa fa-paw mr-2"></span>Pawfection</a>
+      <a class="navbar-brand" href="/dashboardadmin"><span class="fa fa-paw mr-2"></span>Pawfection</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav"
         aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="fa fa-bars"></span> Menu
@@ -65,9 +65,7 @@
           <li class="nav-item active"><a href="/dashboardadmin" class="nav-link">Home</a></li>
           <li class="nav-item "><a href="/messages" class="nav-link">Messages from customers</a></li>
           <li class="nav-item "><a href="/chat" class="nav-link">chat</a></li>
-          <li class="nav-item "><a href="/adoptanimalsadmin" class="nav-link">Animals to adopt</a></li>
-
-
+          <li class="nav-item "><a href="/adoptanimalsadmin" class="nav-link">View Adoptions</a></li>
           <li class="nav-item"><a href="/logoutadmin" class="nav-link">LOGOUT</a></li>
         </ul>
       </div>
@@ -112,7 +110,10 @@
           <td>{{vet.last_name}}</td>
           <td>{{vet.email}}</td>
           <td>{{vet.specialization}}</td>
-          <td><a href="/updatevetpage/{{vet.id}}" class="btn btn-success">Edit</a> </td>
+          <td><a href="/updatevetpage/{{vet.id}}" class="btn btn-success">Edit</a>
+            <a href="/deletevet/{{vet.id}}" class="btn btn-danger">Delete</a>
+
+          </td>
         </tr>
         {%endfor%}
       </tbody>
@@ -141,10 +142,6 @@
                     <div class="form-group my-2">
                       <label for="email" class="form-label d-block">Email:</label>
                       <input type="email" name="email" class="form-control">
-                    </div>
-                    <div class="form-group my-2">
-                      <label for="password" class="form-label d-block">Password:</label>
-                      <input type="password" name="password" class="form-control">
                     </div>
                     <div class="form-group my-2">
                       <input type="submit" value="add vet" class=" btnadd btn btn-primary   py-3 px-4">
