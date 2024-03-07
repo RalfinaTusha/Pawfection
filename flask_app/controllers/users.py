@@ -30,30 +30,20 @@ def loginPage():
         return redirect('/')
     return render_template('login.html')
 
-@app.route('/dashboard')
-def all_users():
-    if 'user_id' not in session:
+@app.route('/login', methods=['POST'])
+def login():
+    if 'user_id' in session:
         return redirect('/')
-    loggedUserData = {
-        'user_id': session['user_id'],
-        
-    } 
-    loggedUser = User.get_user_by_id(loggedUserData)
-    animals=User.get_animals_of_user(loggedUserData)
-    user_count = User.get_user_count()
-    animal_count = User.get_animal_count() 
-    three_posts=Admin.get_three_posts()
-    packages=Package.get_all_packages()
-    vets=Vet.get_all_vets()
-    payments=User.get_user_payments(loggedUserData)
-    if not loggedUser:
-        return redirect('/logout')
-    return render_template('index.html', loggedUser=loggedUser,animals=animals, user_count=user_count, three_posts=three_posts ,packages=packages, animal_count=animal_count, vets=vets, payments=payments)
+    user = User.get_user_by_email(request.form)
+    if not user:
+        flash('This email does not exist.', 'email')
+        return redirect(request.referrer)
+    if not bcrypt.check_password_hash(user['password'], request.form['password']):
+        flash('Your password is wrong!', 'password')
+        return redirect(request.referrer)
+    session['user_id'] = user['id']
+    return redirect('/')
 
-
-
-
- 
 @app.route('/register', methods=['POST'])
 def register():
     if 'user_id' in session:
@@ -74,19 +64,26 @@ def register():
     session['user_id'] = user_id
     return redirect('/')
 
-@app.route('/login', methods=['POST'])
-def login():
-    if 'user_id' in session:
+@app.route('/dashboard')
+def all_users():
+    if 'user_id' not in session:
         return redirect('/')
-    user = User.get_user_by_email(request.form)
-    if not user:
-        flash('This email does not exist.', 'email')
-        return redirect(request.referrer)
-    if not bcrypt.check_password_hash(user['password'], request.form['password']):
-        flash('Your password is wrong!', 'password')
-        return redirect(request.referrer)
-    session['user_id'] = user['id']
-    return redirect('/')
+    loggedUserData = {
+        'user_id': session['user_id']
+    } 
+    loggedUser = User.get_user_by_id(loggedUserData)
+    animals=User.get_animals_of_user(loggedUserData)
+    user_count = User.get_user_count()
+    animal_count = User.get_animal_count() 
+    three_posts=Admin.get_three_posts()
+    packages=Package.get_all_packages()
+    vets=Vet.get_all_vets()
+    payments=User.get_user_payments(loggedUserData)
+    if not loggedUser:
+        return redirect('/logout')
+    return render_template('index.html', loggedUser=loggedUser,animals=animals, user_count=user_count, three_posts=three_posts ,packages=packages, animal_count=animal_count, vets=vets, payments=payments)
+
+
 
 @app.route('/contact')
 def contact():
@@ -159,10 +156,6 @@ def new_profil_pic_user():
             User.update_profile_pic_user(data)
     return redirect('/profile')
 
-@app.route('/logout')
-def logout():
-    session.clear()
-    return redirect('/loginpage')
 
 
 @app.route('/addappointment', methods=['POST'])
@@ -197,6 +190,8 @@ def send_message():
     }
     User.send_message(data)
     return redirect('/contact')
+
+
 
 @app.route("/adoptanimals")
 def adoptanimals():
@@ -326,3 +321,10 @@ def paymentSuccess():
 def paymentCancel():
     flash('Payment was canceled', 'paymentCanceled')
     return redirect('/dashboard')
+
+
+
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect('/loginpage')

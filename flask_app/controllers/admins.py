@@ -1,4 +1,3 @@
-import mailbox
 import smtplib
 from flask_app import app, socketio  # Import socketio from the main app module
 from flask import render_template
@@ -11,9 +10,6 @@ from flask_app.models.vet import Vet
 from flask_app.models.adoption import Adoption
   
  
-
-
-
 UPLOAD_FOLDER = '/flask_app/static/images'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
@@ -32,16 +28,19 @@ def chat():
     return render_template("chat.html")
 ################################################################################################
 
-
 @app.errorhandler(404) 
 def invalid_route(e): 
     return render_template('404.html')
 
+
+#login page route
 @app.route('/loginadminpage')
 def loginadminpage():
     if 'admin_id' in session:
         return redirect('/dashboardadmin') 
     return render_template('loginadmin.html')
+
+
 
 @app.route('/loginadmin', methods=['POST'])
 def loginadmin():
@@ -58,10 +57,12 @@ def loginadmin():
     if not bcrypt.check_password_hash(admin['password'], request.form['password']):
         flash('Your password is wrong!', 'password')
         return redirect(request.referrer)
-   
     session['admin_id'] = admin['id']
     return redirect('/dashboardadmin')
 
+
+
+#dashboard of admin
 @app.route('/dashboardadmin')
 def dashboardadmin():
     if 'admin_id' not in session:
@@ -77,11 +78,15 @@ def dashboardadmin():
     adoptanimals = Admin.get_all_adoptanimals()
     return render_template('indexadmin.html', loggedAdmin=loggedAdmin, messages=messages, vets=vets, adoptanimals=adoptanimals)
 
+
+#logout admin
 @app.route('/logoutadmin')
 def logoutadmin():
     session.clear()
     return redirect('/loginadminpage')
 
+
+#messages of the costumers to the admin
 @app.route('/messages')
 def messages():
     if 'admin_id' not in session:
@@ -90,8 +95,7 @@ def messages():
     return render_template('messages.html', messages=messages)
 
 
-
-
+#admin can add a vet
 @app.route("/addvet", methods=['POST'])
 def addvet():
     if 'admin_id' not in session:
@@ -112,7 +116,7 @@ def addvet():
 
     Vet.create_vet(data)
     return redirect('/dashboardadmin')
-
+#generate a password random and send it to the email of the vet
 def send_email_password(email, password):
     LOGIN = ADMINEMAIL
     TOADDRS = email
@@ -134,6 +138,8 @@ def send_email_password(email, password):
     return redirect('/dashboardadmin')
 
 
+
+#animals that are available for adoption
 @app.route("/adoptanimalsadmin")
 def adoptanimalsadmin():
     if 'admin_id' not in session:
@@ -141,6 +147,8 @@ def adoptanimalsadmin():
     adoptanimals = Admin.get_all_adoptanimals()
     return render_template('adoptanimalsadmin.html', adoptanimals=adoptanimals )
 
+
+#admin can see the requests for adoption for a specific animal
 @app.route("/adoptrequests/<int:adoptanimal_id>")
 def adoptrequests(adoptanimal_id):
     if 'admin_id' not in session:
@@ -154,6 +162,8 @@ def adoptrequests(adoptanimal_id):
     return render_template('adoptrequests.html', adoptanimal=adoptanimal, adoptrequests=adoptrequests)
 
 
+
+#admin can add a new animal for adoption
 @app.route("/addanimal/new", methods=['POST'])
 def newanimaladopt():
     if 'admin_id' not in session:
@@ -166,11 +176,12 @@ def newanimaladopt():
         "picture": request.form['picture'],
         "age": request.form['age']
     }
-
     Admin.create_adopt_animal(data)
     return redirect('/adoptanimalsadmin')
 
 
+
+#admin can add a post on the dashboard page
 @app.route("/addpost", methods=['POST'])
 def addpost():
     if 'admin_id' not in session:
@@ -184,6 +195,8 @@ def addpost():
     Admin.create_post(data)
     return redirect('/dashboardadmin')
 
+
+#admin can update the vet details
 @app.route("/updatevetpage/<int:vet_id>")
 def updatevet(vet_id):
     if 'admin_id' not in session:
@@ -193,6 +206,8 @@ def updatevet(vet_id):
     }
     vet = Vet.get_vet_by_id(vetData)
     return render_template('updatevet.html', vet=vet)
+
+
 
 @app.route("/updatevet/<int:vet_id>", methods=['POST'])
 def updatevetdata(vet_id):
@@ -208,21 +223,9 @@ def updatevetdata(vet_id):
     Admin.update_vet(data)
     return redirect('/dashboardadmin')
 
-# @app.route("/deletevet/<int:vet_id>")
-# def deletevet(vet_id):
-#     if 'admin_id' not in session:
-#         return redirect('/loginadminpage')
-#     vetData = {
-#         "vet_id": vet_id
-#     }
-#     Admin.delete_animals_of_vet(vetData)
-#     Admin.delete_appointments_of_vet(vetData)
-#     Admin.delete_vet(vetData)
 
-#     return redirect('/dashboardadmin')
-from flask_mail import Mail, Message
-# assuming you have initialized your Flask app and mail instance somewhere in your code
 
+#admin can delete a vet and send email to the users that had an pending appointment with the vet
 @app.route("/deletevet/<int:vet_id>")
 def deletevet(vet_id):
     if 'admin_id' not in session:
@@ -235,7 +238,6 @@ def deletevet(vet_id):
     # Get a list of users with accepted = 0 for the given vet
     pending_appointments = Admin.get_pending_appointments_for_vet(vetData)
 
-    # Iterate over the list and send apology emails
     for appointment in pending_appointments:
         user_email = appointment['email']
         send_apology_email(user_email)
@@ -263,11 +265,10 @@ def send_apology_email(user_email):
     server.login(LOGIN, PASSWORD)
     server.sendmail(SENDER, TOADDRS, msg)
     server.quit()
-    return redirect('/dashboardadmin')
-
+    pass
 
      
-
+#acceptation of the adoption request and send email to the user
 @app.route("/acceptadoption/<int:adoptrequest_id>/<int:adoptanimal_id>")
 def acceptadoption(adoptrequest_id, adoptanimal_id ):
     if 'admin_id' not in session:
@@ -306,6 +307,8 @@ def acceptadoption(adoptrequest_id, adoptanimal_id ):
     server.quit()
     return redirect(request.referrer)
 
+
+#admin can answer to the messages of the costumers by email
 @app.route("/answer/<int:message_id>")
 def answerpage(message_id):
     if 'admin_id' not in session:

@@ -34,7 +34,8 @@ class Admin():
             for admin in results:
                 admins.append(admin)
             return admins
-        return admins
+        return admins#
+    
     
     @classmethod
     def get_admin_by_id(cls, data):
@@ -43,11 +44,6 @@ class Admin():
         if results:
             return results[0]
         return False
-    
-    # @classmethod
-    # def edit_admin(cls, data):
-    #     query = "UPDATE admins SET first_name = %(first_name)s, last_name = %(last_name)s, email=%(email)s WHERE id = %(admin_id)s;"
-    #     return connectToMySQL(cls.db_name).query_db(query, data)
     
 
     @classmethod
@@ -61,10 +57,12 @@ class Admin():
             return messages
         return messages
     
+    
     @classmethod
     def create_vet(cls, data):
         query = "INSERT INTO vets (first_name, last_name, email, password, specialization) VALUES ( %(first_name)s, %(last_name)s,%(email)s,%(password)s,%(specialization)s);"
         return connectToMySQL(cls.db_name).query_db(query, data)
+    
     
     @classmethod
     def get_all_adoptanimals(cls):
@@ -77,6 +75,7 @@ class Admin():
             return adoptanimals
         return adoptanimals
     
+    
     @classmethod
     def get_adoptanimal_by_id(cls, data):
         query = "SELECT * FROM adoptanimals WHERE id = %(adoptanimal_id)s"
@@ -85,10 +84,12 @@ class Admin():
             return results[0]
         return False
     
+    
     @classmethod
     def create_adopt_animal(cls, data):
         query = "INSERT INTO adoptanimals ( name, specie, description, picture) VALUES (%(name)s,%(specie)s,%(description)s,%(picture)s);"
         return connectToMySQL(cls.db_name).query_db(query, data)
+    
     
     @classmethod
     def get_all_posts(cls):

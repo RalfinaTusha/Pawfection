@@ -21,8 +21,7 @@ def adopt_pet(adoptanimal_id):
     adoptanimal = Adoption.get_adoptanimal_by_id(adoptanimal_id)
     print(adoptanimal)
     if not adoptanimal:
-        return render_template('404.html', message='Adopted animal not found')  # Handle case when adoptanimal is not found
-
+        return render_template('404.html')  # Handle case when adoptanimal is not found
     user_id = session['user_id']
     data = {
         "user_id": user_id,

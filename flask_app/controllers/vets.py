@@ -57,8 +57,8 @@ def appointment(appointment_id):
     server.login(LOGIN, PASSWORD)
     server.sendmail(SENDER, TOADDRS, msg)
     server.quit()
-
     return redirect(request.referrer)
+
  
 @app.route('/loginvetpage')
 def loginVetPage():
