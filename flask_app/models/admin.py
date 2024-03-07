@@ -192,3 +192,7 @@ class Admin():
             return results[0]
         return False
     
+    @classmethod
+    def delete_adoptions_of_adoptanimal(cls, data):
+        query = "DELETE FROM adoptions WHERE adoptanimal_id = %(adoptanimal_id)s;"
+        return connectToMySQL(cls.db_name).query_db(query, data)

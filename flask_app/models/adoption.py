@@ -76,5 +76,13 @@ class Adoption():
             is_valid = False
         return is_valid
     
+    @classmethod
+    def get_adoption_by_user_and_animal(cls, data):
+        query = "SELECT * FROM adoptions WHERE user_id = %(user_id)s AND adoptanimal_id = %(adoptanimal_id)s;"
+        results = connectToMySQL(cls.db_name).query_db(query, data)
+        if results:
+            return results[0]
+        return False
+    
  
 

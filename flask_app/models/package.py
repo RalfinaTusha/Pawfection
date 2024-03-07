@@ -42,3 +42,8 @@ class Package:
         if results:
             return results[0]
         return False
+    
+    @classmethod
+    def update_package(cls, data):
+        query = "UPDATE packages SET status = CASE WHEN current_timestamp - created_at >= interval '2 months' THEN 'PAID' ELSE 'NOT PAID' END WHERE status <> 'PAID';"
+        return connectToMySQL(cls.db_name).query_db(query, data)

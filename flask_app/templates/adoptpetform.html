@@ -99,14 +99,9 @@
                             <div class="form-group">
                                 <textarea name="reason" id="reason" cols="30" rows="7" class="form-control"
                                     placeholder="Reason"></textarea>
-                                    {% with messages = get_flashed_messages(category_filter=["reason"]) %}
-                                    {% if messages %}
-                                    {% for message in messages %}
-                                    <p class="text-danger text-center">{{message}}</p>
-                                    {% endfor %}
-                                    {% endif %}
-                                    {% endwith %}
-                            </div>
+                                   
+                            </div> 
+                           
                         </div>
                         <div class="col-md-12">
                             <div class="form-group">
@@ -114,13 +109,22 @@
                                     class="btn btn-primary py-3 px-4">
                             </div>
                         </div>
+                       
                     </div>
-                </form>
+                </form> 
+                       
             </div>
         </div>
     </div>
     </div>
 </section>
+{% with messages = get_flashed_messages(category_filter=["reason"]) %}
+{% if messages %}
+{% for message in messages %}
+<p class="text-danger text-center">{{message}}</p>
+{% endfor %}
+{% endif %}
+{% endwith %}
 
  
 

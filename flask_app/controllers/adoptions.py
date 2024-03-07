@@ -23,20 +23,32 @@ def adopt_pet(adoptanimal_id):
     if not adoptanimal:
         return render_template('404.html', message='Adopted animal not found')  # Handle case when adoptanimal is not found
 
+    user_id = session['user_id']
+    data = {
+        "user_id": user_id,
+        "adoptanimal_id": adoptanimal_id
+    }
+
+    # Check if the user has already adopted this animal
+    existing_adoption = Adoption.get_adoption_by_user_and_animal(data)
+    if existing_adoption:
+        flash('You have already made a request for this animal', 'adoptanimal')
+        return redirect(request.referrer)
+
     if request.method == 'GET':
         return render_template('adoptpetform.html', adoptanimal=adoptanimal)
     elif request.method == 'POST':
         if not Adoption.validate_adoption(request.form):
             return redirect(request.referrer)
         data = {
-            "user_id": session['user_id'],
+            "user_id": user_id,
             "adoptanimal_id": adoptanimal_id,
             "reason": request.form['reason'],
             "adoption_date": request.form['adoption_date']
         }
         Adoption.create_adoption(data)
         return redirect('/dashboard')
-    
+
     
 
 

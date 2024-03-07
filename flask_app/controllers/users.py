@@ -41,9 +41,10 @@ def all_users():
     three_posts=Admin.get_three_posts()
     packages=Package.get_all_packages()
     vets=Vet.get_all_vets()
+    payments=User.get_user_payments(loggedUserData)
     if not loggedUser:
         return redirect('/logout')
-    return render_template('index.html', loggedUser=loggedUser,animals=animals, user_count=user_count, three_posts=three_posts ,packages=packages, animal_count=animal_count, vets=vets)
+    return render_template('index.html', loggedUser=loggedUser,animals=animals, user_count=user_count, three_posts=three_posts ,packages=packages, animal_count=animal_count, vets=vets, payments=payments)
 
 
 
@@ -117,7 +118,9 @@ def profile():
     animals = User.get_animals_of_user(data)
     vets = Vet.get_all_vets()
     three_posts=Admin.get_three_posts()
-    return render_template('profile.html', user = user, animals = animals, vets = vets, three_posts=three_posts)
+    payments=User.get_user_payments(data)
+    Package.update_package(data)
+    return render_template('profile.html', user = user, animals = animals, vets = vets, three_posts=three_posts, payments=payments)
 
 
 @app.route('/addanimal', methods=['POST'])
@@ -163,7 +166,7 @@ def add_appointment():
     if 'user_id' not in session:
         return redirect('/loginpage')
     service = request.form['service']
-    vet_id = request.form['vet']  # Assuming your dropdown has a name attribute 'vet'
+    vet_id = request.form['vet']  
         
     data = {
             "user_id": session['user_id'],

@@ -48,7 +48,7 @@
 									class="fa fa-twitter"><i class="sr-only">Twitter</i></span></a>
 							<a href="#" class="d-flex align-items-center justify-content-center"><span
 									class="fa fa-instagram"><i class="sr-only">Instagram</i></span></a>
-							 
+
 						</p>
 					</div>
 				</div>
@@ -207,56 +207,71 @@
 										<button type="submit" class="btn btn-primary upload-button">Upload</button>
 									</form>
 								</div>
-	
- 							</div>
+
+							</div>
 							<div class="col-md-8">
 								<div class="card-body p-4">
 									<h6>Your profile Information</h6>
 									<hr class="mt-0 mb-4">
-					  <div class="row pt-1">
-						<div class="col-6 mb-3">
-						  <h6>Email</h6>
-						  <p class="text-muted">{{user.email}}</p>
+									<div class="row pt-1">
+										<div class="col-6 mb-3">
+											<h6>Email</h6>
+											<p class="text-muted">{{user.email}}</p>
+										</div>
+										<div class="col-6 mb-3">
+											<h6>Phone</h6>
+											<p class="text-muted">123 456 789</p>
+										</div>
+										
+
+
+
+									</div>
+									<p>Here are displayed the animals you have registered in our vet clinic</p>
+									<table class="table table-bordered">
+										<thead>
+											<tr>
+												<th>Animal Name</th>
+												<th>Species</th>
+												<th>Age</th>
+											</tr>
+										</thead>
+										<tbody>
+											{% for animal in animals %}
+											<tr>
+												<td>{{ animal.name }}</td>
+												<td>{{ animal.species }}</td>
+												<td>{{ animal.age }}</td>
+											</tr>
+											{% endfor %}
+										</tbody>
+									</table>
+
+									<div class="d-flex justify-content-start">
+										<a href="#!"><i class="fa fa-facebook-f fa-lg me-3 p-3"></i></a>
+										<a href="#!"><i class="fa fa-twitter fa-lg me-3 p-3"></i></a>
+										<a href="#!"><i class="fa fa-instagram fa-lg p-3"></i></a>
+									</div>
+								</div>
+							</div>
 						</div>
-						<div class="col-6 mb-3">
-						  <h6>Phone</h6>
-						  <p class="text-muted">123 456 789</p>
-						</div>
-					  </div>
-					  <p>Here are displayed the animals you have registered in our vet clinic</p>
-					  <table class="table table-bordered">
-						<thead>
-							<tr>
-								<th>Animal Name</th>
-								<th>Species</th>
-								<th>Age</th>
-							</tr>
-						</thead>
-						<tbody>
-							{% for animal in animals %}
-							<tr>
-								<td>{{ animal.name }}</td>
-								<td>{{ animal.species }}</td>
-								<td>{{ animal.age }}</td>
-							</tr>
-							{% endfor %}
-						</tbody>
-					</table>
-					   
-					  <div class="d-flex justify-content-start">
-						<a href="#!"><i class="fa fa-facebook-f fa-lg me-3 p-3"></i></a>
-						<a href="#!"><i class="fa fa-twitter fa-lg me-3 p-3"></i></a>
-						<a href="#!"><i class="fa fa-instagram fa-lg p-3"></i></a>
-					  </div>
 					</div>
-				  </div>
 				</div>
-			  </div>
 			</div>
-		  </div>
 		</div>
-	  </section>
-	  <section class="ftco-section ftco-no-pt ftco-no-pb">
+	</section>
+	<section class="container">
+		<h1>YOUR PACKAGES</h1>
+ 			{%for payment in payments %}
+			<p class="text-muted">{{payment.name}}</p>
+		</div>
+		{%endfor%}
+
+
+
+
+	</section>
+	<section class="ftco-section ftco-no-pt ftco-no-pb">
 		<div class="container">
 			<div class="row">
 				<div class="col-md-6 pl-md-5 py-5">
@@ -265,44 +280,44 @@
 					</div>
 				</div>
 
- 			<div class="col-md-6 pl-md-5 py-5">
-				<div class="row justify-content-start pb-3">
-					<div class="col-md-12 heading-section ftco-animate">
-						 
-						<h2 class="mb-4 green">Add a pet to your profile</h2>
-						<p>Are you the type of person that loves animals?</p>
+				<div class="col-md-6 pl-md-5 py-5">
+					<div class="row justify-content-start pb-3">
+						<div class="col-md-12 heading-section ftco-animate">
 
-						<form action="/addanimal" method="post">
-							<div class="form-group my-2">
-								<label for="name" class="form-label d-block">Name:</label>
-								<input type="text" name="name" class="form-control">
-							</div>
-							<div class="form-group
+							<h2 class="mb-4 green">Add a pet to your profile</h2>
+							<p>Are you the type of person that loves animals?</p>
+
+							<form action="/addanimal" method="post">
+								<div class="form-group my-2">
+									<label for="name" class="form-label d-block">Name:</label>
+									<input type="text" name="name" class="form-control">
+								</div>
+								<div class="form-group
 					my-2">
-								<label for="species" class="form-label d-block">Species:</label>
-								<input type="text" name="species" class="form-control">
-							</div>
-							<div class="form-group my-2">
-								<label for="age" class="form-label d-block">Age:</label>
-								<input type="text" name="age" class="form-control">
-							</div>
-							<div class="form-group my-2">
-								<label for="vet" class="form-label d-block">Choose Vet:</label>
-								<select name="vet_id" class="form-control">
-									{% for vet in vets %}
-									<option value="{{ vet.id }}">{{ vet.first_name }}</option>
-									{% endfor %}
-								</select>
-							</div>
-							<div class="form-group my-2">
-								<input type="submit" value="add pet" class=" btnadd btn   py-3 px-4">
-							</div>
-						</form>
+									<label for="species" class="form-label d-block">Species:</label>
+									<input type="text" name="species" class="form-control">
+								</div>
+								<div class="form-group my-2">
+									<label for="age" class="form-label d-block">Age:</label>
+									<input type="text" name="age" class="form-control">
+								</div>
+								<div class="form-group my-2">
+									<label for="vet" class="form-label d-block">Choose Vet:</label>
+									<select name="vet_id" class="form-control">
+										{% for vet in vets %}
+										<option value="{{ vet.id }}">{{ vet.first_name }}</option>
+										{% endfor %}
+									</select>
+								</div>
+								<div class="form-group my-2">
+									<input type="submit" value="add pet" class=" btnadd btn   py-3 px-4">
+								</div>
+							</form>
+						</div>
 					</div>
+
 				</div>
-				 
-				</div>
-				 
+
 			</div>
 
 
@@ -330,19 +345,20 @@
 				</div>
 				<div class="col-md-6 col-lg-3 mb-4 mb-md-0">
 					<h2 class="footer-heading">Latest News</h2>
-					{%for three_post in three_posts  %}
+					{%for three_post in three_posts %}
 					<div class="block-21 mb-4 d-flex">
-						<a class="img mr-4 rounded" style="background-image: url(../static/images/{{three_post.image}});"></a>
+						<a class="img mr-4 rounded"
+							style="background-image: url(../static/images/{{three_post.image}});"></a>
 						<div class="text">
 							<h3 class="heading"><a href="/blogpage">{{three_post.title}}</a></h3>
 							<div class="meta">
 								<div><a href="#"><span class="icon-calendar"></span> {{three_post.created_at}}</a></div>
 								<div><a href="#"><span class="icon-person"></span> Admin</a></div>
- 							</div>
+							</div>
 						</div>
 					</div>
 					{% endfor %}
-				 
+
 				</div>
 				<div class="col-md-6 col-lg-3 pl-lg-5 mb-4 mb-md-0">
 					<h2 class="footer-heading">Quick Links</h2>
@@ -350,7 +366,7 @@
 						<li><a href="/dashboard" class="py-2 d-block">Home</a></li>
 						<li><a href="/profile" class="py-2 d-block">Profile</a></li>
 						<li><a href="/services" class="py-2 d-block">Services</a></li>
- 						<li><a href="/blog" class="py-2 d-block">Blog</a></li>
+						<li><a href="/blog" class="py-2 d-block">Blog</a></li>
 						<li><a href="/contact" class="py-2 d-block">Contact</a></li>
 					</ul>
 				</div>
@@ -358,7 +374,8 @@
 					<h2 class="footer-heading">Have a Questions?</h2>
 					<div class="block-23 mb-3">
 						<ul>
-							<li><span class="icon fa fa-map"></span><span class="text">Sheshi Willson,Tirane,Albania</span></li>
+							<li><span class="icon fa fa-map"></span><span class="text">Sheshi
+									Willson,Tirane,Albania</span></li>
 							<li><a href="#"><span class="icon fa fa-phone"></span><span class="text">+2 392 3929
 										210</span></a></li>
 							<li><a href="#"><span class="icon fa fa-paper-plane"></span><span
@@ -367,7 +384,7 @@
 					</div>
 				</div>
 			</div>
-		 
+
 		</div>
 	</footer>
 
@@ -402,11 +419,3 @@
 </body>
 
 </html>
-
-
-
-
-
-
-
- 

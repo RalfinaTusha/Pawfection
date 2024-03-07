@@ -137,6 +137,7 @@ def adoptanimalsadmin():
     if 'admin_id' not in session:
         return redirect('/loginadminpage')
     adoptanimals = Admin.get_all_adoptanimals()
+    
     return render_template('adoptanimalsadmin.html', adoptanimals=adoptanimals )
 
 @app.route("/adoptrequests/<int:adoptanimal_id>")
@@ -282,7 +283,9 @@ def acceptadoption(adoptrequest_id, adoptanimal_id ):
     }
 
     Adoption.accept_adoption(adoptionData)
-    Adoption.change_status(adoptionData)
+    # Adoption.change_status(adoptionData)
+    Admin.delete_adoptions_of_adoptanimal(adoptionData)
+
     LOGIN = ADMINEMAIL
     TOADDRS = email
     SENDER = ADMINEMAIL
@@ -300,7 +303,7 @@ def acceptadoption(adoptrequest_id, adoptanimal_id ):
     server.login(LOGIN, PASSWORD)
     server.sendmail(SENDER, TOADDRS, msg)
     server.quit()
-    return redirect('/adoptanimalsadmin')
+    return redirect(request.referrer)
 
 @app.route("/answer/<int:message_id>")
 def answerpage(message_id):

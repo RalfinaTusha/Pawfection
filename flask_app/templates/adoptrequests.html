@@ -75,11 +75,8 @@
             </button>
             <div class="collapse navbar-collapse" id="ftco-nav">
                 <ul class="navbar-nav ml-auto">
-                    <li class="nav-item  "><a href="/dashboard" class="nav-link">Home</a></li>
-                    <li class="nav-item"><a href="/profile" class="nav-link">Profile</a></li>
-                    <li class="nav-item"><a href="/vets" class="nav-link">Vets</a></li>
-                    <li class="nav-item"><a href="/services" class="nav-link">Services</a></li>
-                     <li class="nav-item active"><a href="/contact" class="nav-link">Contact</a></li>
+                    <li class="nav-item  "><a href="/dashboardadmin" class="nav-link">Home</a></li>
+        
                     <li class="nav-item"><a href="/logout" class="nav-link">LOGOUT</a></li>
                 </ul>
             </div>
@@ -113,6 +110,7 @@
     </style>
     
     <div class="card-container">
+        {%if adoptrequests%}
         {% for adoptrequest in adoptrequests %}
         <div class="card">
             <div class="card-body">
@@ -129,6 +127,9 @@
             </div>
         </div>
         {% endfor %}
+        {%else%}
+        <h1 class="p-3 justify-content-center align-items-center">There are not availabe requests</h1>
+        {%endif%}
     </div>
     
     
