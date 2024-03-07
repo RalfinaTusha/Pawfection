@@ -137,7 +137,6 @@ def adoptanimalsadmin():
     if 'admin_id' not in session:
         return redirect('/loginadminpage')
     adoptanimals = Admin.get_all_adoptanimals()
-    
     return render_template('adoptanimalsadmin.html', adoptanimals=adoptanimals )
 
 @app.route("/adoptrequests/<int:adoptanimal_id>")
