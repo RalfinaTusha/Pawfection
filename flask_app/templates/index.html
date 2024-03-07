@@ -308,8 +308,8 @@
 							<span class="price"><sup>$</sup> <span class="number">49</span> </span>
 
 							<ul class="pricing-text mb-5">
-								<li><span class="fa fa-check mr-2"></span>5 Dog Walk</li>
-								<li><span class="fa fa-check mr-2"></span>3 Vet Visit</li>
+								<li><span class="fa fa-check mr-2"></span>1 Dog Walk</li> 
+								<li><span class="fa fa-check mr-2"></span>2 Vet Visit</li>
 								<li><span class="fa fa-check mr-2"></span>3 Pet Spa</li>
 								<li><span class="fa fa-check mr-2"></span>Free Supports</li>
 							</ul>
@@ -326,7 +326,7 @@
 							<span class="price"><sup>$</sup> <span class="number">79</span> </span>
 
 							<ul class="pricing-text mb-5">
-								<li><span class="fa fa-check mr-2"></span>5 Dog Walk</li>
+								<li><span class="fa fa-check mr-2"></span>2 Dog Walk</li>
 								<li><span class="fa fa-check mr-2"></span>3 Vet Visit</li>
 								<li><span class="fa fa-check mr-2"></span>3 Pet Spa</li>
 								<li><span class="fa fa-check mr-2"></span>Free Supports</li>
@@ -345,7 +345,7 @@
 
 							<ul class="pricing-text mb-5">
 								<li><span class="fa fa-check mr-2"></span>5 Dog Walk</li>
-								<li><span class="fa fa-check mr-2"></span>3 Vet Visit</li>
+								<li><span class="fa fa-check mr-2"></span>4 Vet Visit</li>
 								<li><span class="fa fa-check mr-2"></span>3 Pet Spa</li>
 								<li><span class="fa fa-check mr-2"></span>Free Supports</li>
 							</ul>
@@ -357,6 +357,18 @@
 			</div>
 		</div>
 	</section>
+	<script>
+		window.onload = function() {
+			var sectionId = window.location.hash.substring(1); // Get the section ID from the URL
+			if (sectionId) {
+				var element = document.getElementById(sectionId);
+				if (element) {
+					element.scrollIntoView();
+				}
+			}
+		}
+	</script>
+	
 
 
 

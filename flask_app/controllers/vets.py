@@ -98,7 +98,9 @@ def all_vets():
 
 UPLOAD_FOLDER = 'flask_app/static/images'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-
+@app.errorhandler(404) 
+def invalid_route(e): 
+    return render_template('404.html')
 
 
 @app.route('/profilepic', methods=['POST'])

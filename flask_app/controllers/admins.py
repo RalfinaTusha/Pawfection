@@ -33,7 +33,9 @@ def chat():
 ################################################################################################
 
 
-
+@app.errorhandler(404) 
+def invalid_route(e): 
+    return render_template('404.html')
 
 @app.route('/loginadminpage')
 def loginadminpage():
@@ -315,12 +317,11 @@ def answerpage(message_id):
     return render_template('answer.html', message=message)
 
 
-@app.route("/answer/<int:message_id>", methods=['POST'])
-def answer(message_id):
+@app.route("/answer", methods=['POST'])
+def answer():
     if 'admin_id' not in session:
         return redirect('/loginadminpage')
-    message_id = message_id
-    answer= request.form['answer']
+    answer= request.form['message']
     email= request.form['email']
     # data = {
     #     "message_id": message_id,
@@ -334,7 +335,7 @@ def answer(message_id):
     
     msg = ("From: %s\r\nTo: %s\r\nSubject: %s\r\n\r\n"
                 % ((SENDER), "".join(TOADDRS), SUBJECT))
-    msg += f"Dear User,\n\n"
+    msg += answer
     server = smtplib.SMTP('smtp.gmail.com', 587)
     server.set_debuglevel(1)
     server.ehlo()
@@ -342,7 +343,7 @@ def answer(message_id):
     server.login(LOGIN, PASSWORD)
     server.sendmail(SENDER, TOADDRS, msg)
     server.quit()
-    return redirect('/dashboardadmin')
+    return redirect(request.referrer)
 
 
 

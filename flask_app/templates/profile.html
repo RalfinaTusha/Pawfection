@@ -26,6 +26,8 @@
 	<link rel="stylesheet" href="../static/css/flaticon.cs">
 	<link rel="stylesheet" href="../static/css/style.css">
 	<link rel="stylesheet" href="../static/css/profilepic.css">
+	<link rel="stylesheet" href="../static/css/card.css">
+
 </head>
 
 <body>
@@ -312,21 +314,22 @@
 
 
 	</section>
-	<section class="container">
-		<h1>YOUR PAYMENT RECORDS</h1>
- 			{%for payment in payments %}
-			 <div class="card">
-				<div class="card-details">
-				  <p class="text-title">Card title</p>
-				  <p class="text-body">Package Name:{{payment.name}}</p>
-					<p class="text-body">Price:{{payment.price}}</p>
-					<p class="text-body">Date:{{payment.created_at}}</p>
-				</div>
-				<button class="card-button">More info</button>
-			  </div>
+	<div id="payments">
+	<h1 class="payment p-3">Hey {{user.first_name}} , your payment records</h1>
+	<section class="container d-flex justify-content-center align-items-center p-3" >
 		
+ 			{%for payment in payments %}
+			 <div class="cardd p-3">
+				<div class="cardd-details">
+				  <p class="textt-title">Package:</p>
+				  <p class="textt-body">{{payment.name}}</p>
+					<p class="textt-body">Price:{{payment.price}}</p>
+					<p class="textt-body">Date:{{payment.created_at}}</p>
+				</div>
+ 			  </div>		
 		{%endfor%}
 	</section>
+</div>
 
 
 

@@ -14,6 +14,10 @@ from werkzeug.utils import secure_filename
 UPLOAD_FOLDER = 'flask_app/static/images'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
+@app.errorhandler(404) 
+def invalid_route(e): 
+    return render_template('404.html')
+
 @app.route('/')
 def index():
     if 'user_id' in session:
@@ -308,7 +312,7 @@ def paymentSuccess():
             Package.createPayment(data)
            
             flash('Your payment was successful!', 'paymentSuccessful')
-            return redirect('/dashboard')
+            return redirect('/profile#payments')
         else:
             print("")
             flash('Something went wrong with your payment', 'paymentNotSuccessful')
