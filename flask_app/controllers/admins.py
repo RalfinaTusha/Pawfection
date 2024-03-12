@@ -1,3 +1,4 @@
+import os
 import smtplib
 from flask_app import app, socketio  # Import socketio from the main app module
 from flask import render_template
@@ -8,13 +9,20 @@ bcrypt = Bcrypt(app)
 from flask_app.models.admin import Admin
 from flask_app.models.vet import Vet
 from flask_app.models.adoption import Adoption
+from dotenv import load_dotenv
+
+# Load environment variables from .env
+load_dotenv()
+
   
  
 UPLOAD_FOLDER = '/flask_app/static/images'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-ADMINEMAIL = 'inatusha1@gmail.com'
-PASSWORD = "godcnjwbemlgkotp"
+ADMINEMAIL = os.getenv('ADMINEMAIL')
+PASSWORD = os.getenv('PASSWORD')
+
+
 
 
 ######CHAT###################################################################################

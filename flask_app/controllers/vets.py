@@ -14,14 +14,16 @@ import smtplib
 
 UPLOAD_FOLDER = '/flask_app/static/images'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+from dotenv import load_dotenv
 
-ADMINEMAIL = 'inatusha1@gmail.com'
-PASSWORD = "godcnjwbemlgkotp"
+# Load environment variables from .env
+load_dotenv()
+ADMINEMAIL = os.getenv('ADMINEMAIL')
+PASSWORD = os.getenv('PASSWORD')
 
 @app.route('/appointment/<int:appointment_id>', methods=['POST'])
 def appointment(appointment_id):
     appointment_details = Vet.get_appointment_details(data={'appointment_id': appointment_id})
-    accepeted = appointment_details['accepted']
     email=appointment_details['user_email']
 
     LOGIN = ADMINEMAIL
